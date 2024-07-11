@@ -46,14 +46,14 @@ public class Exercise2_2_11 {
             return;
         }
         int mid = lo + (hi - lo) / 2;
-        sort(aux, a, lo, mid);
+        sort(aux, a, lo, mid);//the swap is important 
         sort(aux, a, mid + 1, hi);
 
-     /*   if (!less(aux[mid + 1], aux[mid])) {
+        if (!less(aux[mid + 1], aux[mid])) {
             System.arraycopy(aux, lo, a, lo, hi - lo + 1);
             return;
         }
-*/ 
+
         merge(a, aux, lo, mid, hi);
     }
 
