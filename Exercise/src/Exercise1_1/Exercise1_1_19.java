@@ -1,4 +1,4 @@
-
+package Exercise1_1;
 public class Exercise1_1_19 {
     public static long[] F(int N) {
         if(N<2) N=2;

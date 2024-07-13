@@ -1,4 +1,4 @@
-
+package Exercise1_1;
 public class Exercise1_1_30 {
     public static boolean[][] bool_array(int N)
     {

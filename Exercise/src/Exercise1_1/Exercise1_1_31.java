@@ -1,4 +1,4 @@
-
+package Exercise1_1;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdRandom;
 

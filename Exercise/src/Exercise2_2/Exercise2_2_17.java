@@ -67,11 +67,9 @@ public class Exercise2_2_17 {
         LinkedList<Comparable>.Node newlo;
         LinkedList<Comparable>.Node newhi;
         LinkedList<Comparable>.Node afterlast;
-        
 
         public MergeResult(LinkedList<Comparable>.Node newlo,
-                LinkedList<Comparable>.Node newhi,LinkedList<Comparable>.Node afterlast
-            ) {
+                LinkedList<Comparable>.Node newhi, LinkedList<Comparable>.Node afterlast) {
             this.newlo = newlo;
             this.newhi = newhi;
             this.afterlast = afterlast;
@@ -99,7 +97,6 @@ public class Exercise2_2_17 {
             aux = i;
             i = i.next;
         }
-        
 
         while (i != mid.next && j != hi.next) {
             if (less(j.item, i.item)) {
@@ -114,18 +111,16 @@ public class Exercise2_2_17 {
 
         }
         if (i == mid.next) {
-            aux.next = j;
+            aux.next = j;//this is important
             newhi = hi;
-         
+
         } else {
             aux.next = i;
             newhi = mid;
-            mid.next = afterlast;
-           
-            
+            mid.next = afterlast;//this is important
 
         }
-        return new MergeResult(newlo,newhi,afterlast);
+        return new MergeResult(newlo, newhi, afterlast);
 
     }
 
@@ -141,49 +136,36 @@ public class Exercise2_2_17 {
 
     public static void sort(LinkedList<Comparable> a) {
 
-
-
-        LinkedList<Comparable>.Node ini;
-        LinkedList<Comparable>.Node lo ;
+        LinkedList<Comparable>.Node lo;
         LinkedList<Comparable>.Node mid, hi;
 
-      /*  mid = FindKey(a.first);
-      if (mid.next != null) {
-          hi = FindKey(mid.next);
-          ini = merge(a.first, mid, hi).newlo;
-      }
-      else
-          ini = a.first;
-      
-      lo = ini;
-      */
-      lo = a.first;
-      ini = a.first;
-      while (a.size > 0) {
-          mid = FindKey(lo);
-          if (mid.next == null) {
-              if (lo == ini)
-                  break;
-              else {
-                  lo = ini;
-                  continue;
-              }
-          } else {
-              hi = FindKey(mid.next);
-              MergeResult m = merge(lo, mid, hi);
-              hi = m.newhi;
-              ini = m.newlo;
+        lo = a.first;
 
-              // show(a);
-              if (hi.next == null) {
-                  lo = ini;
-              } else
-                  lo = hi.next;
+        while (a.size > 0) {
+            mid = FindKey(lo);
+            if (mid.next == null) {
+                if (lo == a.first)//the linkedlist is sorted
+                    break;
+                else {
+                    lo = a.first;//important
+                    continue;
+                }
+            } else {
+                hi = FindKey(mid.next);
+                MergeResult m = merge(lo, mid, hi);
+                hi = m.newhi;
+                if (lo == a.first)//means that a.first might be not correct and need change
+                    a.first = m.newlo;
 
-          }
+                 //show(a);
+                if (hi.next == null) {
+                    lo = a.first;
+                } else
+                    lo = hi.next;
 
-      }
-      a.first = ini;
+            }
+
+        }
 
     }
 
@@ -203,6 +185,8 @@ public class Exercise2_2_17 {
         a.add(1);
         a.add(4);
         a.add(9);
+        a.add(8);
+        a.add(7);
         show(a);
         sort(a);
         show(a);
