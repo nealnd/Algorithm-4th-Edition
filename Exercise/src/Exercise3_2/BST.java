@@ -344,6 +344,32 @@ public class BST<Key extends Comparable<Key>, Value> {
         for (Character item : st.keys())
             StdOut.println(item + " " + st.get(item));
 
+        StdOut.println();
+
+        StdOut.println("min: " + st.min());
+        StdOut.println("max: " + st.max());
+        StdOut.println("floor: " + st.floor('G'));
+        StdOut.println("ceiling: " + st.ceiling('G'));
+        StdOut.println("select: " + st.select(3));
+        StdOut.println("rank: " + st.rank('N'));
+        st.delete('N');
+        StdOut.println("After delete N, the tree: ");
+        for (Character item : st.levelOrder())
+            StdOut.println(item + " " + st.get(item));
+        StdOut.println();
+
+        StdOut.println("After delete min,the tree: ");
+        st.deleteMin();
+        for (Character item : st.levelOrder())
+            StdOut.println(item + " " + st.get(item));
+        StdOut.println();
+
+        StdOut.println("After delete max,the tree: ");
+        st.deleteMax();
+        for (Character item : st.levelOrder())
+            StdOut.println(item + " " + st.get(item));
+        StdOut.println();
+
     }
 
 }
