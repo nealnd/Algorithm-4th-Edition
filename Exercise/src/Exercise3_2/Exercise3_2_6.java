@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdOut;
 
-public class BST<Key extends Comparable<Key>, Value> {
+public class Exercise3_2_6<Key extends Comparable<Key>, Value> {
     private Node root;
 
     private class Node {
@@ -13,15 +13,17 @@ public class BST<Key extends Comparable<Key>, Value> {
         private Value val;
         private Node left, right;
         private int size;
+        private int height;
 
-        public Node(Key key, Value val, int size) {
+        public Node(Key key, Value val, int size,int height) {
             this.key = key;
             this.val = val;
             this.size = size;
+            this.height=height;
         }
     }
 
-    public BST() {
+    public Exercise3_2_6() {
 
     }
 
@@ -89,6 +91,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             return x.right;
         x.left = deleteMin(x.left);
         x.size = size(x.left) + size(x.right) + 1;
+        x.height=Math.max(height(x.left),height(x.right))+1;
         return x;
     }
 
@@ -103,6 +106,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             return x.left;
         x.right = deleteMax(x.right);
         x.size = size(x.left) + size(x.right) + 1;
+        x.height=Math.max(height(x.left),height(x.right))+1;
         return x;
     }
 
@@ -132,6 +136,8 @@ public class BST<Key extends Comparable<Key>, Value> {
             x.left = t.left;
         }
         x.size = size(x.left) + size(x.right) + 1;
+        x.height=Math.max(height(x.left),height(x.right))+1;
+        
         return x;
     }
 
@@ -143,7 +149,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     private Node put(Node x, Key key, Value val) {
         if (x == null)
-            return new Node(key, val, 1);
+            return new Node(key, val, 1,1);
         int cmp = key.compareTo(x.key);
         if (cmp < 0)
             x.left = put(x.left, key, val);
@@ -152,6 +158,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         else
             x.val = val;
         x.size = 1 + size(x.left) + size(x.right);
+        x.height=Math.max(height(x.left),height(x.right))+1;
         return x;
     }
 
@@ -311,8 +318,8 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     private int height(Node x) {
         if (x == null)
-            return -1;
-        return 1 + Math.max(height(x.left), height(x.right));
+            return 0;
+        return x.height;
     }
 
     public Iterable<Key> levelOrder() {
@@ -332,7 +339,7 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     public static void main(String[] args) {
-        BST<Character, Integer> st = new BST<>();
+        Exercise3_2_6<Character, Integer> st = new Exercise3_2_6<>();
         String s = "EASYQUESTION";
         for (int i = 0; i < s.length(); i++) {
             st.put(s.charAt(i), i + 1);
@@ -346,7 +353,8 @@ public class BST<Key extends Comparable<Key>, Value> {
 
         StdOut.println();
 
-StdOut.println("size: "+st.size());
+        
+        StdOut.println("size: "+st.size());
         StdOut.println("height: "+st.height());
         StdOut.println("min: " + st.min());
         StdOut.println("max: " + st.max());
@@ -373,5 +381,4 @@ StdOut.println("size: "+st.size());
         StdOut.println();
 
     }
-
 }
