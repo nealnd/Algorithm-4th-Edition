@@ -2,10 +2,11 @@ package Exercise3_2;
 
 import java.util.NoSuchElementException;
 
+import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdOut;
 
-public class Exercise3_2_13<Key extends Comparable<Key>, Value> {
+public class Exercise3_2_36<Key extends Comparable<Key>, Value> {
     private Node root;
 
     private class Node {
@@ -23,7 +24,7 @@ public class Exercise3_2_13<Key extends Comparable<Key>, Value> {
         }
     }
 
-    public Exercise3_2_13() {
+    public Exercise3_2_36() {
 
     }
 
@@ -57,20 +58,7 @@ public class Exercise3_2_13<Key extends Comparable<Key>, Value> {
     }
 
     public Value get(Key key) {
-        
-        Node x = root;
-        while (x != null) {
-            int cmp = key.compareTo(x.key);
-            if (cmp == 0)
-                return x.val;
-
-            else if (cmp < 0)
-                x = x.left;
-            else if (cmp > 0)
-                x = x.right;
-
-        }
-        return null;
+        return get(root, key);
     }
 
     private Node min(Node x) {
@@ -299,17 +287,51 @@ public class Exercise3_2_13<Key extends Comparable<Key>, Value> {
         return queue;
     }
 
+    /*
+     * private void keys(Node x, Queue<Key> queue, Key lo, Key hi) {
+     * if (x == null)
+     * return;
+     * int cmplo = lo.compareTo(x.key);
+     * int cmphi = hi.compareTo(x.key);
+     * if (cmplo < 0)
+     * keys(x.left, queue, lo, hi);
+     * if (cmplo <= 0 && cmphi >= 0)
+     * queue.enqueue(x.key);
+     * if (cmphi > 0)
+     * keys(x.right, queue, lo, hi);
+     * }
+     */
     private void keys(Node x, Queue<Key> queue, Key lo, Key hi) {
+        Stack<Node> stack = new Stack<Node>();
         if (x == null)
             return;
-        int cmplo = lo.compareTo(x.key);
-        int cmphi = hi.compareTo(x.key);
-        if (cmplo < 0)
-            keys(x.left, queue, lo, hi);
-        if (cmplo <= 0 && cmphi >= 0)
-            queue.enqueue(x.key);
-        if (cmphi > 0)
-            keys(x.right, queue, lo, hi);
+        while (x != null) {
+            int cmplo = lo.compareTo(x.key);
+            int cmphi = hi.compareTo(x.key);
+            if (cmplo <= 0 && cmphi >= 0)
+                stack.push(x);
+            x = x.left;
+            if (x != null)
+                continue;
+
+            else {
+                if (stack.isEmpty())
+                    break;
+                Node y = stack.pop();
+                queue.enqueue(y.key);
+                while (y.right == null && !stack.isEmpty()) {
+                    y = stack.pop();
+                    queue.enqueue(y.key);
+                }
+
+                if (y.right != null) {
+                    x = y.right;
+                    continue;
+                }
+            }
+
+        }
+
     }
 
     public int size(Key lo, Key hi) {
@@ -351,8 +373,35 @@ public class Exercise3_2_13<Key extends Comparable<Key>, Value> {
         return keys;
     }
 
+    public Iterable<Key> printLevel(Key x) {
+        Queue<Key> keys = new Queue<Key>();
+        Queue<Node> queue = new Queue<Node>();
+        Node aim = root;
+        // assert x belongs to the tree;
+        while (true) {
+            int cmt = x.compareTo(aim.key);
+            if (cmt < 0)
+                aim = aim.left;
+            else if (cmt > 0)
+                aim = aim.right;
+            else
+                break;
+        }
+        queue.enqueue(aim);
+        while (!queue.isEmpty()) {
+            Node y = queue.dequeue();
+            if (y == null)
+                continue;
+            keys.enqueue(y.key);
+            queue.enqueue(y.left);
+            queue.enqueue(y.right);
+
+        }
+        return keys;
+    }
+
     public static void main(String[] args) {
-        Exercise3_2_6<Character, Integer> st = new Exercise3_2_6<>();
+        Exercise3_2_36<Character, Integer> st = new Exercise3_2_36<>();
         String s = "EASYQUESTION";
         for (int i = 0; i < s.length(); i++) {
             st.put(s.charAt(i), i + 1);
@@ -362,6 +411,12 @@ public class Exercise3_2_13<Key extends Comparable<Key>, Value> {
         StdOut.println();
 
         for (Character item : st.keys())
+            StdOut.println(item + " " + st.get(item));
+
+        StdOut.println();
+
+        StdOut.println("Level print: ");
+        for (Character item : st.printLevel('S'))
             StdOut.println(item + " " + st.get(item));
 
         StdOut.println();
