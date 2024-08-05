@@ -74,7 +74,13 @@ public class DepthFirstOrder {
     public static void main(String[] args) {
         In in = new In(args[0]);
         Digraph G = new Digraph(in);
-
+       /* 
+        Digraph G = new Digraph(3);
+        G.addEdge(0, 2);
+        G.addEdge(0, 1);
+       
+        G.addEdge(2, 1);
+*/
         DepthFirstOrder dfs = new DepthFirstOrder(G);
         StdOut.println("   v  pre post");
         StdOut.println("--------------");
